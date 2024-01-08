@@ -1,6 +1,9 @@
 from core import Environment, Factory
 from utilities import generate_networkx_graph
 
+# Custom children classses for this example
+from patient import Patient
+
 if __name__ == '__main__':
     env = Environment(time=0, dt=1) # dt = 1week
 
@@ -47,12 +50,12 @@ if __name__ == '__main__':
     env.create_connection("ect", "remission")
     env.create_connection("ect", "ad")
 
-    generate_networkx_graph(env)
+    # generate_networkx_graph(env)
 
-    factory = Factory(config="../../config/agent_params.json")
+    factory = Factory(config="../../config/agent_params.json", agent_class_type=Patient)
     env.connect_factory(factory)
 
-    # Set up the initial conditions of the pathway
+    # # Set up the initial conditions of the pathway
     env.create_initial_agents(2, "ad")
     env.create_initial_agents(2, "ap")
     env.create_initial_agents(2, "ad_ap")

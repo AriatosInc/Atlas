@@ -1,9 +1,10 @@
 import heapq
 import uuid
 
+
 class Environment:
     def __init__(self, time, dt):
-        self.patient_rate = None
+        self.entity_rate = None
         self.id = uuid.uuid4()
         self.time = time
         self.dt = dt
@@ -24,8 +25,8 @@ class Environment:
 
         while self.time < until:
             # Let's update all the bubbles
-            for bubble in self.bubbles:
-                bubble.update()
+            # for bubble in self.bubbles:
+            #     bubble.update()
 
             # Adding new agents to the intake
             self.factory_tick()
@@ -35,7 +36,6 @@ class Environment:
             self.time += self.dt
 
             if verbose: self.print_progress()
-
 
     def print_progress(self):
         print(f"----- Time: {self.time} -----")
@@ -108,7 +108,6 @@ class Environment:
             self.data['bubble_occupancies'][bubble.slug].append(occupancy)
             self.data['waiting_list'][bubble.slug].append(waiting)
 
-
     def connect_factory(self, factory):
         factory.connect_environment(self)
         self.factory = factory
@@ -122,7 +121,7 @@ class Environment:
         if intake_bubble is None:
             return ValueError("No Intake Bubble Found")
 
-        for _ in range(self.patient_rate):
+        for _ in range(self.entity_rate):
             new_agent = self.factory.create_agent(intake_bubble)
             intake_bubble.add_agent(new_agent)
 
@@ -140,9 +139,9 @@ class Environment:
             self.agents.append(agent)  # Add the agents to the environment storage
             initial_bubble.add_agent(agent)  # Add the agents to their initial bubble
 
-    def set_patient_rate(self, patient_rate):
+    def set_entity_rate(self, entity_rate):
         # TODO: Make the Patient Rate varied per dt (week) / mean / sd
-        self.patient_rate = patient_rate
+        self.entity_rate = entity_rate
 
     def plot_occupancies(self, bubbles_to_plot=None):
         import matplotlib.pyplot as plt
